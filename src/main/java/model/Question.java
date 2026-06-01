@@ -1,41 +1,41 @@
 package model;
 
-public class Question extends BaseEntity {
+import jakarta.persistence.*;
+import java.util.List;
 
-    private int assessmentId; // Sorunun ait olduğu sınavın ID'si (Veritabanı ilişkisi için)
-    private String questionText;
-    private String correctAnswer;
+@Entity
+@Table(name = "questions")
+public class Question {
 
-    // Constructor
-    public Question(int id, int assessmentId, String questionText, String correctAnswer) {
-        this.setId(id);
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "assessment_id")
+    private int assessmentId;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String text;
+
+    @OneToMany(mappedBy = "questionId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<QuestionOption> options;
+
+    public Question() {}
+
+    public Question(int assessmentId, String text) {
         this.assessmentId = assessmentId;
-        this.questionText = questionText;
-        this.correctAnswer = correctAnswer;
+        this.text = text;
     }
 
-    // Getter ve Setter Metotları
-    public int getAssessmentId() {
-        return assessmentId;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public void setAssessmentId(int assessmentId) {
-        this.assessmentId = assessmentId;
-    }
+    public int getAssessmentId() { return assessmentId; }
+    public void setAssessmentId(int assessmentId) { this.assessmentId = assessmentId; }
 
-    public String getQuestionText() {
-        return questionText;
-    }
+    public String getText() { return text; }
+    public void setText(String text) { this.text = text; }
 
-    public void setQuestionText(String questionText) {
-        this.questionText = questionText;
-    }
-
-    public String getCorrectAnswer() {
-        return correctAnswer;
-    }
-
-    public void setCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer;
-    }
+    public List<QuestionOption> getOptions() { return options; }
+    public void setOptions(List<QuestionOption> options) { this.options = options; }
 }

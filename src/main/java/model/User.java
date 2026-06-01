@@ -1,43 +1,42 @@
 package model;
 
-// Inheritance: "extends BaseEntity" yazarak BaseEntity sınıfından id alanını miras alıyoruz.
-public class User extends BaseEntity {
+import jakarta.persistence.*;
 
-    // Encapsulation: Alanları private tutarak sarmalama yapıyoruz.
+@Entity
+@Table(name = "users")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
-    private String role; // 'ADMIN' veya 'STUDENT'
 
-    // Constructor: Nesne ilk oluşturulduğunda çalışan yapıcı metot.
-    public User(int id, String name, String email, String role) {
-        this.setId(id); // Miras aldığımız id alanını ayarlıyoruz.
+    @Column(nullable = false)
+    private String role;
+
+    public User() {}
+
+    public User(String name, String email, String role) {
         this.name = name;
         this.email = email;
         this.role = role;
     }
 
-    // Getter ve Setter Metotları (Encapsulation)
-    public String getName() {
-        return name;
-    }
+    // Getter ve Setter Metotları
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }

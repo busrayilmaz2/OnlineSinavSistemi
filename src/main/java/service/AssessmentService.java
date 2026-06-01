@@ -1,33 +1,61 @@
 package service;
 
 import model.Assessment;
+import model.Question;
+import model.QuestionOption;
+import model.StudentAnswer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import repository.AssessmentRepository;
+import repository.QuestionOptionRepository;
+import repository.QuestionRepository;
+import repository.StudentAnswerRepository;
+
 import java.util.List;
 
+@Service
 public class AssessmentService {
-    // Repository katmanına bağlanıyoruz
-    private final AssessmentRepository assessmentRepository = new AssessmentRepository();
 
-    // 1. Yeni Sınav/Anket Oluşturma İş Mantığı
-    public void createAssessment(String title, String type, int createdBy) {
-        if (title == null || title.trim().isEmpty()) {
-            System.out.println("=> Hata: Sınav/Anket başlığı boş olamaz!");
-            return;
-        }
+    @Autowired
+    private AssessmentRepository assessmentRepository;
 
-        // Tipi büyük harfe çevirip kontrol ediyoruz ('EXAM' veya 'SURVEY' olmalı)
-        String upperType = type.toUpperCase();
-        if (!upperType.equals("EXAM") && !upperType.equals("SURVEY")) {
-            System.out.println("=> Hata: Geçersiz tip! Yalnızca 'EXAM' veya 'SURVEY' olabilir.");
-            return;
-        }
+    @Autowired
+    private QuestionRepository questionRepository;
 
-        Assessment assessment = new Assessment(0, title, upperType, createdBy);
-        assessmentRepository.save(assessment);
+    @Autowired
+    private QuestionOptionRepository questionOptionRepository;
+
+    @Autowired
+    private StudentAnswerRepository studentAnswerRepository;
+
+    public Assessment createAssessment(String title, String type, int createdBy) {
+        Assessment assessment = new Assessment(title, type, createdBy);
+        return assessmentRepository.save(assessment);
     }
 
-    // 2. Tüm Sınavları Listeleme İş Mantığı
     public List<Assessment> getAllAssessments() {
         return assessmentRepository.findAll();
+    }
+
+    public Question addQuestion(int assessmentId, String text) {
+        Question question = new Question(assessmentId, text);
+        return questionRepository.save(question);
+    }
+
+    public QuestionOption addOption(int questionId, String optionText, boolean isCorrect) {
+        QuestionOption option = new QuestionOption(questionId, optionText, isCorrect);
+        return questionOptionRepository.save(option);
+    }
+
+    public StudentAnswer saveStudentAnswer(StudentAnswer answer) {
+        return studentAnswerRepository.save(answer);
+    }
+
+    public List<Question> getQuestionsByAssessment(int assessmentId) {
+        List<Question> questions = questionRepository.findByAssessmentId(assessmentId);
+        for (Question q : questions) {
+            q.setOptions(questionOptionRepository.findByQuestionId(q.getId()));
+        }
+        return questions;
     }
 }

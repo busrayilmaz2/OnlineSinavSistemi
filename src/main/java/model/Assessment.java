@@ -1,43 +1,44 @@
 package model;
 
-// Inheritance: BaseEntity'den id alanını miras alıyoruz.
-public class Assessment extends BaseEntity {
+import jakarta.persistence.*;
 
-    // Encapsulation: private alanlar
+@Entity
+@Table(name = "assessments")
+public class Assessment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(nullable = false)
     private String title;
-    private String type; // 'EXAM' veya 'SURVEY'
-    private int createdBy; // Oluşturan kullanıcının ID'si
 
-    // Constructor (Yapıcı Metot)
-    public Assessment(int id, String title, String type, int createdBy) {
-        this.setId(id); // Üst sınıftan gelen id'yi set ediyoruz
+    @Column(nullable = false)
+    private String type;
+
+    @Column(name = "created_by")
+    private int createdBy;
+
+    // 1. Boş Constructor (Spring Boot'un çalışması için şart kanka)
+    public Assessment() {}
+
+    // 2. Üç Parametreli Constructor (Servis katmanındaki hatayı çözen can simidimiz)
+    public Assessment(String title, String type, int createdBy) {
         this.title = title;
         this.type = type;
         this.createdBy = createdBy;
     }
 
     // Getter ve Setter Metotları
-    public String getTitle() {
-        return title;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getType() {
-        return type;
-    }
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public int getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
-    }
+    public int getCreatedBy() { return createdBy; }
+    public void setCreatedBy(int createdBy) { this.createdBy = createdBy; }
 }

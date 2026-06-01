@@ -1,48 +1,9 @@
 package repository;
 
 import model.Assessment;
-import util.DBUtil; // Bu da yukardaki temiz util klasörüne bağlanıyor
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class AssessmentRepository {
-
-    public void save(Assessment assessment) {
-        String sql = "INSERT INTO assessments (title, type, created_by) VALUES (?, ?, ?)";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, assessment.getTitle());
-            stmt.setString(2, assessment.getType());
-            stmt.setInt(3, assessment.getCreatedBy());
-            stmt.executeUpdate();
-            System.out.println("=> Sınav/Anket oluşturuldu: " + assessment.getTitle());
-        } catch (SQLException e) {
-            System.out.println("=> Sınav oluşturulurken hata: " + e.getMessage());
-        }
-    }
-
-    public List<Assessment> findAll() {
-        List<Assessment> list = new ArrayList<>();
-        String sql = "SELECT * FROM assessments";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Assessment assessment = new Assessment(
-                        rs.getInt("id"),
-                        rs.getString("title"),
-                        rs.getString("type"),
-                        rs.getInt("created_by")
-                );
-                list.add(assessment);
-            }
-        } catch (SQLException e) {
-            System.out.println("=> Sınavlar listelenirken hata: " + e.getMessage());
-        }
-        return list;
-    }
+@Repository
+public interface AssessmentRepository extends JpaRepository<Assessment, Integer> {
 }
