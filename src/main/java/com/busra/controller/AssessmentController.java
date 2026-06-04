@@ -46,4 +46,10 @@ public class AssessmentController {
     public StudentAnswer answerQuestion(@RequestBody StudentAnswer answer) {
         return assessmentService.saveStudentAnswer(answer);
     }
+
+    // 6. Sınav Sonuç Raporu ve Doğru-Yanlış Analizi (GET -> http://localhost:8080/api/assessments/report?userId=1&assessmentId=1)
+    @GetMapping("/report")
+    public String getReport(@RequestParam int userId, @RequestParam int assessmentId) {
+        return assessmentService.getStudentReport(userId, assessmentId);
+    }
 }
