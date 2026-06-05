@@ -9,6 +9,10 @@ public class SurveyGui extends JFrame {
     private String cevap1 = "";
     private String cevap2 = "";
     private String cevap3 = "";
+    private String cevap4 = "";
+    private String cevap5 = "";
+
+
 
     public SurveyGui() {
         setTitle("Çevrimiçi Sınav ve Anket Sistemi");
@@ -66,13 +70,17 @@ public class SurveyGui extends JFrame {
 
     private void openSurveyWindow() {
         cevap1 = JOptionPane.showInputDialog(this,
-                "Soru 1:\nİncelediğiniz 10 akademik makale içinde renk tabanlı nesne takibinde en başarılı algoritma hangisiydi?");
+                "Soru 1:\nHangi sınava girdiniz?");
 
         cevap2 = JOptionPane.showInputDialog(this,
-                "Soru 2:\nGörüntü işlemede arka plan gürültüsünü (noise) azaltmak için hangi filtreleme yöntemini kullandınız?");
+                "Soru 2:\nSorun yaşadığınız ya da kontrol etmek istediğiniz özel bir durum var mı?");
 
         cevap3 = JOptionPane.showInputDialog(this,
                 "Soru 3:\nProjedeki sınav ve anket zorluk derecesi sizce nasıldı? (Kolay / Orta / Zor)");
+        cevap4 = JOptionPane.showInputDialog(this,
+                "Soru 4:\nBina sınav sorumlusu ve diğer görevliler arasındaki koordinasyon verimli miydi?");
+        cevap5 = JOptionPane.showInputDialog(this,
+                "Soru 5:\nSınav sırasında adli bir vaka, kopya girişimi, sağlık problemi veya sistemsel bir kriz yaşandı mı?");
 
         JOptionPane.showMessageDialog(this,
                 "Tüm anket yanıtlarınız başarıyla kaydedildi!\nTeşekkür ederiz, " + kullaniciAdi);
@@ -84,7 +92,9 @@ public class SurveyGui extends JFrame {
                         + "Kullanıcı: " + kullaniciAdi + "\n\n"
                         + "1. Cevap: " + cevap1 + "\n"
                         + "2. Cevap: " + cevap2 + "\n"
-                        + "3. Cevap: " + cevap3,
+                        + "3. Cevap: " + cevap3 + "\n"
+                + "4. Cevap: " + cevap4 + "\n"
+                + "5. Cevap: " + cevap5,
                 "Sonuçlar",
                 JOptionPane.INFORMATION_MESSAGE);
     }
